@@ -4,18 +4,40 @@ Holds all settings for the agent: search terms and scoring rules.
 No API key needed - uses OpenStreetMap (free, public, no signup).
 """
 
-# ---- What to search for ----
-# Each combination of country + industry becomes a search query.
-COUNTRIES = [
-    "United States",
-    "United Kingdom",
-    "Canada",
+# ---- US search settings: all 50 states ----
+US_STATES = [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+    "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+    "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+    "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+    "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri",
+    "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+    "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
+    "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+    "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
+    "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
 ]
 
-INDUSTRIES = [
+# Nominatim needs the full "State, United States" format to search correctly.
+US_LOCATIONS = [state + ", United States" for state in US_STATES]
+
+US_INDUSTRIES = [
     "marketing agency",
     "law firm",
     "dental clinic",
+]
+
+# ---- El Salvador search settings ----
+EL_SALVADOR_LOCATIONS = [
+    "El Salvador",
+]
+
+EL_SALVADOR_INDUSTRIES = [
+    "hotel",
+    "restaurant",
+    "retail store",
+    "local business",
+    "tourism agency",
 ]
 
 # ---- How many results per search ----

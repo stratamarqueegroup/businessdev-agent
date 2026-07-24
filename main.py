@@ -1,17 +1,22 @@
 """
 main.py
 Runs the full lead-generation agent:
-1. Scrape real businesses from Google Places
+1. Scrape real businesses from OpenStreetMap (US states + El Salvador)
 2. Clean/dedupe them
 3. Score them as leads
 4. Export the results to CSV
+5. Email the report
 """
 
-from config import COUNTRIES, INDUSTRIES
+from config import (
+    US_LOCATIONS, US_INDUSTRIES,
+    EL_SALVADOR_LOCATIONS, EL_SALVADOR_INDUSTRIES,
+)
 from scraper import scrape_businesses
 from leads import dedupe_leads, filter_top_leads
 from scoring import score_all
 from exporters import export_to_csv
+from emailer import send_report_email
 
 
 def run_agent():
@@ -19,8 +24,14 @@ def run_agent():
     print("Business Lead Agent - starting run")
     print("=" * 50)
 
-    # 1. Get real businesses
-    businesses = scrape_businesses(COUNTRIES, INDUSTRIES)
+    # 1. Get real businesses - US states first, then El Salvador
+    print("\n--- Searching US states ---")
+    us_businesses = scrape_businesses(US_LOCATIONS, US_INDUSTRIES)
+
+    print("\n--- Searching El Salvador ---")
+    el_salvador_businesses = scrape_businesses(EL_SALVADOR_LOCATIONS, EL_SALVADOR_INDUSTRIES)
+
+    businesses = us_businesses + el_salvador_businesses
     print(f"\nFound {len(businesses)} raw results.")
 
     # 2. Remove duplicates
@@ -40,9 +51,12 @@ def run_agent():
         print(f"  {b['company']} ({b['country']}) - score {b['score']} - {b['score_reasons']}")
 
     # 6. Export to CSV
-    export_to_csv(top_leads)
+    csv_path = export_to_csv(top_leads)
 
-    print("\n✅ Agent run complete.")
+    # 7. Email the report
+    send_report_email(csv_path, len(top_leads))
+
+    print("\nAgent run complete.")
 
 
 if __name__ == "__main__":
