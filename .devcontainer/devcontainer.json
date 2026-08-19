@@ -1,0 +1,15 @@
+{
+  "name": "STRATA OS",
+  "postStartCommand": "bash .devcontainer/start-strata.sh",
+  "forwardPorts": [5173, 8000],
+  "portsAttributes": {
+    "5173": {
+      "label": "STRATA OS",
+      "onAutoForward": "openBrowser"
+    },
+    "8000": {
+      "label": "STRATA API",
+      "onAutoForward": "notify"
+    }
+  }
+}

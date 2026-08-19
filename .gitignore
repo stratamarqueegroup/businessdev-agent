@@ -1,0 +1,27 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Generated lead output
+output/*.csv
+
+# STRATA API local data
+strata-api/tasks.json
+
+# Node
+strata-os/node_modules/
+strata-os/dist/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

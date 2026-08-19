@@ -1,0 +1,974 @@
+/* =========================================================
+   STRATA OS — JARVIS-STYLE INTERFACE
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #030609;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+/* =========================================================
+   APPLICATION SHELL
+========================================================= */
+
+.app {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr) 350px;
+
+  width: 100%;
+  height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(0, 234, 255, 0.035),
+      transparent 45%
+    ),
+    #030609;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 28px 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 15, 22, 0.98),
+      rgba(5, 8, 13, 0.98)
+    );
+
+  border-right: 1px solid rgba(0, 234, 255, 0.14);
+
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  margin-bottom: 35px;
+}
+
+.sidebar h1 {
+  margin-bottom: 10px;
+
+  color: #00eaff;
+
+  font-size: 22px;
+
+  letter-spacing: 4px;
+
+  text-shadow:
+    0 0 10px rgba(0, 234, 255, 0.45);
+}
+
+.system-status {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #71808c;
+
+  font-size: 9px;
+
+  letter-spacing: 1.5px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  background: #00eaff;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 8px #00eaff,
+    0 0 16px rgba(0, 234, 255, 0.5);
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.nav-btn {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  width: 100%;
+
+  padding: 13px 14px;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  color: #89939d;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  letter-spacing: 0.8px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.nav-btn svg {
+  font-size: 17px;
+
+  color: #68737e;
+
+  transition: 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(0, 234, 255, 0.045);
+
+  border-color: rgba(0, 234, 255, 0.12);
+
+  color: #ffffff;
+
+  transform: translateX(3px);
+}
+
+.nav-btn:hover svg {
+  color: #00eaff;
+}
+
+.nav-btn.active {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 234, 255, 0.13),
+      rgba(0, 234, 255, 0.025)
+    );
+
+  border-color: rgba(0, 234, 255, 0.2);
+
+  color: #00eaff;
+}
+
+.nav-btn.active::before {
+  content: "";
+
+  position: absolute;
+
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+
+  width: 2px;
+
+  background: #00eaff;
+
+  box-shadow: 0 0 10px #00eaff;
+}
+
+.nav-btn.active svg {
+  color: #00eaff;
+}
+
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
+
+.sidebar-footer {
+  margin-top: auto;
+
+  padding-top: 25px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  color: #414b55;
+
+  font-size: 9px;
+
+  letter-spacing: 1.5px;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main {
+  position: relative;
+
+  min-width: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background:
+    linear-gradient(
+      rgba(0, 234, 255, 0.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0, 234, 255, 0.018) 1px,
+      transparent 1px
+    );
+
+  background-size: 50px 50px;
+}
+
+/* subtle center glow */
+
+.main::before {
+  content: "";
+
+  position: fixed;
+
+  left: 50%;
+  top: 50%;
+
+  width: 600px;
+  height: 600px;
+
+  transform: translate(-50%, -50%);
+
+  background: radial-gradient(
+    circle,
+    rgba(0, 234, 255, 0.035),
+    transparent 65%
+  );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   RIGHT AI PANEL
+========================================================= */
+
+.panel {
+  height: 100vh;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 13, 19, 0.98),
+      rgba(4, 7, 11, 0.99)
+    );
+
+  border-left: 1px solid rgba(0, 234, 255, 0.14);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+  height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  background: rgba(5, 9, 14, 0.78);
+
+  border-bottom: 1px solid rgba(0, 234, 255, 0.1);
+
+  backdrop-filter: blur(18px);
+}
+
+.topbar-left h2 {
+  color: #00eaff;
+
+  font-size: 15px;
+
+  letter-spacing: 3px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+.search-box {
+  width: 360px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px 15px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(0, 234, 255, 0.1);
+
+  border-radius: 3px;
+}
+
+.search-box input {
+  flex: 1;
+
+  background: transparent;
+
+  border: none;
+  outline: none;
+
+  color: #ffffff;
+
+  font-size: 12px;
+}
+
+.search-box input::placeholder {
+  color: #4d5964;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 12px;
+
+  background: rgba(0, 234, 255, 0.055);
+
+  border: 1px solid rgba(0, 234, 255, 0.15);
+
+  border-radius: 3px;
+
+  color: #00eaff;
+
+  font-size: 9px;
+
+  letter-spacing: 1px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 3px;
+
+  color: #71808c;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: #00eaff;
+
+  border-color: rgba(0, 234, 255, 0.25);
+
+  background: rgba(0, 234, 255, 0.06);
+}
+
+.clock {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #68737e;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard-page {
+  min-height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  flex: 1;
+
+  position: relative;
+
+  padding: 30px;
+}
+
+/* =========================================================
+   STATS GRID
+========================================================= */
+
+.stats-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  padding: 25px;
+}
+
+.stat-card {
+  position: relative;
+
+  padding: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(0, 234, 255, 0.015)
+    );
+
+  border: 1px solid rgba(0, 234, 255, 0.12);
+
+  border-radius: 3px;
+
+  transition: 0.25s ease;
+}
+
+.stat-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 35px;
+  height: 1px;
+
+  background: #00eaff;
+
+  box-shadow: 0 0 8px #00eaff;
+}
+
+.stat-card:hover {
+  border-color: rgba(0, 234, 255, 0.4);
+
+  background: rgba(0, 234, 255, 0.035);
+
+  transform: translateY(-2px);
+}
+
+.stat-title {
+  margin-bottom: 10px;
+
+  color: #68737e;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+}
+
+.stat-value {
+  color: #00eaff;
+
+  font-size: 26px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-shadow: 0 0 12px rgba(0, 234, 255, 0.25);
+}
+
+/* =========================================================
+   GENERIC CARDS
+========================================================= */
+
+.card {
+  padding: 20px;
+
+  margin-bottom: 15px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(0, 234, 255, 0.1);
+
+  border-radius: 3px;
+}
+
+.card h1 {
+  color: #00eaff;
+
+  font-size: 34px;
+}
+
+.card h3 {
+  color: #00eaff;
+
+  font-size: 14px;
+
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   LEADS
+========================================================= */
+
+.leads-page {
+  width: 100%;
+
+  min-height: 100%;
+
+  padding: 30px;
+}
+
+.leads-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 25px;
+}
+
+.leads-header h1 {
+  color: #ffffff;
+
+  font-size: 26px;
+
+  letter-spacing: 1px;
+}
+
+.leads-header p {
+  margin-top: 6px;
+
+  color: #65717c;
+
+  font-size: 11px;
+}
+
+.leads-search {
+  width: 100%;
+
+  padding: 13px 16px;
+
+  margin-bottom: 18px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(0, 234, 255, 0.1);
+
+  border-radius: 3px;
+
+  color: #ffffff;
+
+  outline: none;
+}
+
+.leads-search:focus {
+  border-color: rgba(0, 234, 255, 0.45);
+
+  box-shadow: 0 0 12px rgba(0, 234, 255, 0.06);
+}
+
+.lead-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.lead-card {
+  display: grid;
+
+  grid-template-columns:
+    2fr 1fr 1fr 100px;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 16px;
+
+  background: rgba(255, 255, 255, 0.022);
+
+  border: 1px solid rgba(0, 234, 255, 0.08);
+
+  border-radius: 3px;
+
+  transition: 0.2s ease;
+}
+
+.lead-card:hover {
+  background: rgba(0, 234, 255, 0.035);
+
+  border-color: rgba(0, 234, 255, 0.3);
+}
+
+.lead-company {
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.lead-meta {
+  margin-top: 4px;
+
+  color: #5f6b76;
+
+  font-size: 10px;
+}
+
+.lead-score {
+  color: #00eaff;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.lead-status {
+  width: fit-content;
+
+  padding: 5px 8px;
+
+  background: rgba(0, 234, 255, 0.05);
+
+  border: 1px solid rgba(0, 234, 255, 0.14);
+
+  border-radius: 2px;
+
+  color: #00eaff;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   STRATA AI COMMAND CENTER
+========================================================= */
+
+.strata-chat {
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 234, 255, 0.035),
+      rgba(0, 0, 0, 0.08)
+    );
+
+  border: 1px solid rgba(0, 234, 255, 0.14);
+
+  border-radius: 3px;
+
+  overflow: hidden;
+}
+
+.strata-chat-header {
+  padding: 17px;
+
+  border-bottom: 1px solid rgba(0, 234, 255, 0.12);
+
+  background: rgba(0, 234, 255, 0.025);
+}
+
+.strata-chat-title {
+  color: #00eaff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  text-shadow: 0 0 8px rgba(0, 234, 255, 0.3);
+}
+
+.strata-chat-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 6px;
+
+  color: #596671;
+
+  font-size: 8px;
+
+  letter-spacing: 1.5px;
+}
+
+.strata-status-dot {
+  width: 6px;
+  height: 6px;
+
+  background: #00eaff;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 7px #00eaff,
+    0 0 14px rgba(0, 234, 255, 0.5);
+}
+
+.strata-chat-messages {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding: 17px;
+}
+
+.strata-message {
+  margin-bottom: 17px;
+}
+
+.strata-message-label {
+  margin-bottom: 5px;
+
+  color: #00eaff;
+
+  font-size: 8px;
+
+  letter-spacing: 1.5px;
+}
+
+.strata-message.user .strata-message-label {
+  color: #8b969f;
+}
+
+.strata-message-text {
+  padding: 10px 12px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border-left: 2px solid rgba(0, 234, 255, 0.35);
+
+  color: #c8d1d8;
+
+  font-size: 11px;
+
+  line-height: 1.55;
+}
+
+.strata-message.user .strata-message-text {
+  border-left-color: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================================
+   COMMAND BAR
+========================================================= */
+
+.strata-command-bar {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 11px;
+
+  border-top: 1px solid rgba(0, 234, 255, 0.12);
+
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.command-symbol {
+  color: #00eaff;
+
+  font-size: 13px;
+
+  font-weight: bold;
+}
+
+.strata-command-bar input {
+  flex: 1;
+
+  min-width: 0;
+
+  background: transparent;
+
+  border: none;
+
+  outline: none;
+
+  color: #ffffff;
+
+  font-size: 11px;
+}
+
+.strata-command-bar input::placeholder {
+  color: #46515b;
+}
+
+.strata-command-bar button {
+  padding: 7px 9px;
+
+  background: transparent;
+
+  border: 1px solid rgba(0, 234, 255, 0.3);
+
+  color: #00eaff;
+
+  font-size: 8px;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.strata-command-bar button:hover {
+  background: rgba(0, 234, 255, 0.08);
+
+  border-color: #00eaff;
+
+  box-shadow: 0 0 8px rgba(0, 234, 255, 0.15);
+}
+
+/* =========================================================
+   SCROLLBARS
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 234, 255, 0.2);
+
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 234, 255, 0.4);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+  .app {
+    grid-template-columns:
+      220px minmax(0, 1fr);
+  }
+
+  .panel {
+    display: none;
+  }
+
+  .stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .app {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lead-card {
+    grid-template-columns: 1fr;
+  }
+
+  .search-box {
+    width: 220px;
+  }
